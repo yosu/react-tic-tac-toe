@@ -46,11 +46,19 @@ class Board extends React.Component {
 }
 
 class History extends React.Component {
+  calculatePosition(i) {
+    return {
+      col: i % 3,
+      row: Math.floor(i / 3),
+    }
+  }
+
   render() {
     const moves = this.props.history.map((step, move) => {
+      const p = this.calculatePosition(step.position)
       const desc = move ?
-        'Go to move #' + move :
-        'Go to game start';
+        `Go to move #${move} (${p.col}, ${p.row})`:
+        'Go to game start (col, row)';
       return (
         <li key={move}>
           <button onClick={() => this.props.onClick(move)}>{desc}</button>
@@ -69,7 +77,8 @@ class Game extends React.Component {
     super(props)
     this.state = {
       history: [{
-        squares: Array(9).fill(null)
+        squares: Array(9).fill(null),
+        position: null,
       }],
       stepNumber: 0,
       xIsNext: true,
@@ -87,6 +96,7 @@ class Game extends React.Component {
     this.setState({
       history: history.concat([{
         squares: squares,
+        position: i,
       }]),
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
