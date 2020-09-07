@@ -4,8 +4,12 @@ import './index.css'
 
 class Square extends React.Component {
   render() {
+    let className = ["square"]
+    if (this.props.isWin) {
+      className.push("win")
+    }
     return (
-      <button className="square" onClick={() => this.props.onClick()}>
+      <button className={className.join(" ")} onClick={() => this.props.onClick()}>
         {this.props.value}
       </button>
     );
@@ -13,17 +17,18 @@ class Square extends React.Component {
 }
 
 class Board extends React.Component {
-  renderSquare(i) {
+  renderSquare(i, isWin) {
     return (
       <Square
         value={this.props.squares[i]}
+        isWin={isWin}
         onClick={() => this.props.onClick(i)}
       />
     );
   }
 
-  renderRow(col) {
-    const columns = range(col*3, (col+1)*3).map((i) => this.renderSquare(i));
+  renderRow(col, winnerLine) {
+    const columns = range(col*3, (col+1)*3).map((i) => this.renderSquare(i, winnerLine && winnerLine.includes(i)));
 
     return (
       <div className="board-row">
@@ -33,7 +38,8 @@ class Board extends React.Component {
   }
 
   render() {
-    const rows = range(0, 3).map((col) => this.renderRow(col));
+    const winnerLine = calculateWinnerLine(this.props.squares)
+    const rows = range(0, 3).map((col) => this.renderRow(col, winnerLine));
 
     return (
       <div>
@@ -169,7 +175,32 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
+function calculateWinnerLine(squares) {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return lines[i];
+    }
+  }
+  return null;
+}
+
 function calculateWinner(squares) {
+  const line = calculateWinnerLine(squares)
+  if (line) {
+    return squares[line[0]];
+  }
+  return null;
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
