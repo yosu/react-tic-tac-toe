@@ -83,14 +83,13 @@ class History extends React.Component {
 
 class GameStatus extends React.Component {
   render() {
-    const winner = calculateWinner(this.props.squares)
+    const winner = calculateWinner(this.props.squares);
+    const isFull = this.props.squares.every((v) => v);
 
-    let status;
-    if (winner) {
-      status = 'Winner: ' + winner;
-    } else {
-      status = 'Next player: ' + (this.props.xIsNext ? 'X' : 'O');
-    }
+    const status = (winner) ? 'Winner: ' + winner
+                 : (isFull) ? "Tie Game"
+                 :'Next player: ' + (this.props.xIsNext ? 'X' : 'O')
+                 ;
     return (
       <div>{status}</div>
     );
@@ -151,14 +150,7 @@ class Game extends React.Component {
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
-    const winner = calculateWinner(current.squares)
 
-    let status;
-    if (winner) {
-      status = 'Winner: ' + winner;
-    } else {
-      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-    }
     const order = "History Order " + (this.state.isReverseOrder ? "▲" : "▼")
     return (
       <div className="game">
