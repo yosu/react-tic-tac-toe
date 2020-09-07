@@ -40,6 +40,10 @@ ol, ul {
     font-weight: bold;
 }
 
+.history-order-toggle {
+    margin-top: 10px;
+}
+
 .kbd-navigation .square:focus {
     background: #ddd;
 }

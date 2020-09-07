@@ -65,6 +65,10 @@ class History extends React.Component {
       )
     });
 
+    if (this.props.isReverseOrder) {
+      moves.reverse();
+    }
+
     return (
       <ol className="history">{moves}</ol>
     );
@@ -79,6 +83,7 @@ class Game extends React.Component {
         squares: Array(9).fill(null),
         position: null,
       }],
+      isReverseOrder: false,
       stepNumber: 0,
       xIsNext: true,
     };
@@ -106,6 +111,14 @@ class Game extends React.Component {
     this.jumpTo(move)
   }
 
+  handleHistoryOrderClick() {
+    this.setState((state) => {
+      return {
+        isReverseOrder: !state.isReverseOrder
+      }
+    });
+  }
+
   jumpTo(step) {
     this.setState({
       stepNumber: step,
@@ -124,6 +137,7 @@ class Game extends React.Component {
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
+    const order = "History Order " + (this.state.isReverseOrder ? "▲" : "▼")
     return (
       <div className="game">
         <div className="game-board">
@@ -134,9 +148,13 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
+          <div className="history-order-toggle">
+            <button onClick={() => this.handleHistoryOrderClick()}>{order}</button>
+          </div>
           <History
             history={history}
             stepNumber={this.state.stepNumber}
+            isReverseOrder={this.state.isReverseOrder}
             onClick={(move) => this.handleHistoryClick(move)}
           />
         </div>
