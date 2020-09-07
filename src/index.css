@@ -36,8 +36,12 @@ ol, ul {
     outline: none;
 }
 
+.history .selected {
+    font-weight: bold;
+}
+
 .kbd-navigation .square:focus {
-    background: #dd;
+    background: #ddd;
 }
 
 .game {

@@ -59,15 +59,16 @@ class History extends React.Component {
       const desc = move ?
         `Go to move #${move} (${p.col}, ${p.row})`:
         'Go to game start (col, row)';
+      const className = (move === this.props.stepNumber) ? "selected" : null;
       return (
-        <li key={move}>
-          <button onClick={() => this.props.onClick(move)}>{desc}</button>
+        <li key={move} className={className}>
+          <button className={className} onClick={() => this.props.onClick(move)}>{desc}</button>
         </li>
       )
     });
 
     return (
-      <ol>{moves}</ol>
+      <ol className="history">{moves}</ol>
     );
   }
 }
@@ -137,6 +138,7 @@ class Game extends React.Component {
           <div>{status}</div>
           <History
             history={history}
+            stepNumber={this.state.stepNumber}
             onClick={(move) => this.handleHistoryClick(move)}
           />
         </div>
