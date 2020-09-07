@@ -22,24 +22,22 @@ class Board extends React.Component {
     );
   }
 
+  renderRow(col) {
+    const columns = range(col*3, (col+1)*3).map((i) => this.renderSquare(i));
+
+    return (
+      <div className="board-row">
+        {columns}
+      </div>
+    );
+  }
+
   render() {
+    const rows = range(0, 3).map((col) => this.renderRow(col));
+
     return (
       <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+        {rows}
       </div>
     );
   }
@@ -171,4 +169,9 @@ function calculateWinner(squares) {
     }
   }
   return null;
+}
+
+function range(start, stop) {
+  const len = stop - start
+  return Array.from(Array(len), (v, k) => k + start)
 }
